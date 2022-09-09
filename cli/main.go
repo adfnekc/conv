@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "conv"
+	"conv"
 	"conv/converter"
 	"conv/input"
 	"fmt"
@@ -9,7 +9,10 @@ import (
 )
 
 func main() {
+	conv.Parse()
+	fmt.Printf("config: %#v\n", conv.GetConf())
 	src := input.ReadSeq()
+	fmt.Printf("src: %#v\n", src)
 	c := converter.Get("mulit_line_escape")
 	b, err := c.From(src)
 	if err != nil {

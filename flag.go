@@ -5,8 +5,8 @@ import (
 )
 
 func Parse() {
-	flag.StringVar(&conf.InputType, "InputType", "plain", "")
-	flag.StringVar(&conf.OutputType, "OutputType", "", "")
+	flag.StringVar(&conf.InputType, "i", "plain", "input type")
+	flag.StringVar(&conf.OutputType, "o", "", "output type")
 
 	flag.Parse()
 }

@@ -2,10 +2,11 @@ package input
 
 import (
 	"bufio"
-	"bytes"
 	"errors"
-	"fmt"
+
 	"os"
+	"reflect"
+	"runtime"
 )
 
 func readStdin() ([]byte, error) {
@@ -24,21 +25,6 @@ func readStdin() ([]byte, error) {
 	return b, nil
 }
 
-func readInput() ([]byte, error) {
-	scan := bufio.NewScanner(os.Stdin)
-	var b []byte
-	fmt.Print("Enter characters:", "\n")
-	for scan.Scan() {
-		line := scan.Bytes()
-		if bytes.Equal(line, []byte{0x0a}) {
-			break
-		}
-		b = append(b, line...)
-	}
-
-	return b, nil
-}
-
 var ReadSeqList = []func() ([]byte, error){
 	readStdin, readInput,
 }
@@ -47,6 +33,7 @@ func ReadSeq() []byte {
 	for _, readFunc := range ReadSeqList {
 		b, err := readFunc()
 		if err != nil {
+			// log.Printf("readFunc <%v> err :%s", getFunctionName(readFunc), err)
 			continue
 		}
 		if len(b) == 0 {
@@ -55,4 +42,8 @@ func ReadSeq() []byte {
 		return b
 	}
 	return nil
+}
+
+func getFunctionName(i interface{}) string {
+	return runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
 }
